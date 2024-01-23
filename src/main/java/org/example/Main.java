@@ -20,24 +20,34 @@ public class Main {
 
     }
 
+    /** Итоговый запуск
+     * @param hasChoice - изменять ли выбор двери, или нет
+     */
     public static void run(boolean hasChoice){
         HashMap<Integer, Integer> result = new HashMap<>();
-        for (int i = 0; i < 1001; i++) {
+        for (int i = 0; i < 1000; i++) {
             result.put(i, play(hasChoice));
         }
         System.out.println("Выиграл в " + resultProcent(result) + "% случаев");
     }
 
+    /** Создаем три двери, в одной из которых приз
+     */
     private static List<String> createDoors(){
         List<String> threeDoors = new ArrayList<>(3);
         fillDoors(threeDoors);
         return threeDoors;
     }
 
+    /** случайный выбор двери
+     */
     private static int randomIndex(){
         return random.nextInt(0,3);
     }
 
+    /** Заполняем одну случайную дверь призом
+     * @param emptyThreeDoors - три созданные пустые двери
+     */
     private static void fillDoors(List<String> emptyThreeDoors){
         for (int i = 0; i < 3; i++) {
             emptyThreeDoors.add("Empty");
@@ -45,6 +55,9 @@ public class Main {
         emptyThreeDoors.set(randomIndex(), "Price");
     }
 
+    /** Выбираем дверь с призом
+     * @param threeDoors - три созданные двери, в одной из которых находится приз
+     */
     private static void chooseDoor(List<String> threeDoors){
         int index = randomIndex();
         if (threeDoors.get(index).equals("Empty")){
@@ -54,6 +67,9 @@ public class Main {
         }
     }
 
+    /** Открываем пустую дверь
+     * @param threeDoors - три созданные двери, в одной из которых находится приз
+     */
     private static void openInvalidDoor(List<String> threeDoors){
         for (int i = 0; i < threeDoors.size(); i++) {
             if (threeDoors.get(i).equals("Empty")){
@@ -63,6 +79,11 @@ public class Main {
         }
     }
 
+    /** Возвращаем статус выиграша
+     * @param threeDoors - три двери, в одной из них приз
+     * @param hasChoice - выбираем, менять или не менять дверь
+     * @return 1- если выиграли, 0 - если проиграли
+     */
     private static int getStatus(List<String> threeDoors, boolean hasChoice){
         if (hasChoice){
             if (threeDoors.contains("Win")){
@@ -79,6 +100,10 @@ public class Main {
         }
     }
 
+    /** Проигрывается один раунд игры
+     * @param hasChoice - изменять ли выбор двери, или нет
+     * @return 1 - выиграл, 0 - проиграл
+     */
     private static int play(boolean hasChoice){
         List<String> threeDoors = createDoors();
         chooseDoor(threeDoors);
@@ -86,6 +111,10 @@ public class Main {
         return getStatus(threeDoors, hasChoice);
     }
 
+    /** Определяем процент выигрыша
+     * @param result Результат всех игр
+     * @return процент выигрыша
+     */
     private static double resultProcent(HashMap<Integer, Integer> result){
         int count = 0;
         for (HashMap.Entry<Integer, Integer> element : result.entrySet()) {
